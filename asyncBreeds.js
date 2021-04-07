@@ -1,4 +1,4 @@
-// //THIS CODE WILL NOT WORK: 
+// //THIS CODE WILL NOT WORK:
 // // asyncBreeds.js
 // const fs = require('fs');
 
@@ -20,23 +20,27 @@
 //UPDATED CODE THAT WILL WORK:
 
 // asyncBreeds.js
-const fs = require('fs');
+const fs = require("fs");
 
-const breedDetailsFromFile = function(breed, functionToRunWhenThingsAreDone) {
-  console.log('breedDetailsFromFile: Calling readFile...');
-  fs.readFile(`./data/${breed}.txt`, 'utf8', (error, data) => {
-    console.log("In readFile's Callback: it has the data.");
+const breedDetailsFromFile = function (breed, functionToRunWhenThingsAreDone) {
+  // console.log("breedDetailsFromFile: Calling readFile...");
+  fs.readFile(`./data/${breed}.txt`, "utf8", (error, data) => {
+    // console.log("In readFile's Callback: it has the data.");
     // ISSUE: Returning from *inner* callback function, not breedDetailsFromFile.
-    if (!error) functionToRunWhenThingsAreDone(data);
+    if (error) {
+      functionToRunWhenThingsAreDone(undefined);
+    } else if (!error) functionToRunWhenThingsAreDone(data);
   });
   // ISSUE: Attempting to return data out here will also not work.
   //        Currently not returning anything from here, so breedDetailsFromFile function returns undefined.
 };
 
 //CHANGE 1: moved the console.log into a new function
-const printOutCatBreed = function(breed) {
-  console.log('Return value: ', breed)
-}
+// const printOutCatBreed = function (breed) {
+//   console.log("Return value: ", breed);
+// };
 
 //CHANGE 2: we're not passing 2 arguments into breedDetailsFromFile: breed string and callback function
-breedDetailsFromFile('Bombay', printOutCatBreed);
+// breedDetailsFromFile("Bombay", printOutCatBreed);
+
+module.exports = breedDetailsFromFile;
